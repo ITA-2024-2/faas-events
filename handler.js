@@ -2,20 +2,40 @@
 
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const s3 = new AWS.S3();
 const { v4: uuidv4 } = require('uuid');
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = 'your_secret_key';
+
+const authenticate = (event) => {
+  const authHeader = event.headers.Authorization || event.headers.authorization;
+  if (!authHeader) {
+    throw new Error('Unauthorized');
+  }
+
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    return decoded;
+  } catch (err) {
+    throw new Error('Unauthorized');
+  }
+};
 
 module.exports.createExam = async (event) => {
   console.log("Received event:", JSON.stringify(event, null, 2));
   let data;
 
   try {
+    authenticate(event);
     data = JSON.parse(event.body);
     console.log("Parsed data:", data);
   } catch (error) {
-    console.error("Error parsing event body:", error);
+    console.error("Error parsing event body or unauthorized:", error);
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'Invalid request body', details: error.message }),
+      body: JSON.stringify({ error: 'Invalid request body or unauthorized', details: error.message }),
     };
   }
 
@@ -51,7 +71,7 @@ module.exports.createExam = async (event) => {
   }
 };
 
-module.exports.getAllExams = async () => {
+module.exports.getAllExams = async (event) => {
   const params = {
     TableName: 'Exams',
   };
@@ -59,6 +79,7 @@ module.exports.getAllExams = async () => {
   console.log("DynamoDB scan params:", params);
 
   try {
+    authenticate(event);
     const result = await dynamoDb.scan(params).promise();
     console.log("Exams retrieved successfully:", result.Items);
     return {
@@ -66,10 +87,10 @@ module.exports.getAllExams = async () => {
       body: JSON.stringify(result.Items),
     };
   } catch (error) {
-    console.error("Error retrieving exams:", error);
+    console.error("Error retrieving exams or unauthorized:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Could not retrieve exams', details: error.message }),
+      body: JSON.stringify({ error: 'Could not retrieve exams or unauthorized', details: error.message }),
     };
   }
 };
@@ -87,6 +108,7 @@ module.exports.getExam = async (event) => {
   console.log("DynamoDB get params:", params);
 
   try {
+    authenticate(event);
     const result = await dynamoDb.get(params).promise();
     if (result.Item) {
       console.log("Exam retrieved successfully:", result.Item);
@@ -102,10 +124,10 @@ module.exports.getExam = async (event) => {
       };
     }
   } catch (error) {
-    console.error("Error retrieving exam:", error);
+    console.error("Error retrieving exam or unauthorized:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Could not retrieve exam', details: error.message }),
+      body: JSON.stringify({ error: 'Could not retrieve exam or unauthorized', details: error.message }),
     };
   }
 };
@@ -115,13 +137,14 @@ module.exports.updateExam = async (event) => {
   let data;
 
   try {
+    authenticate(event);
     data = JSON.parse(event.body);
     console.log("Parsed data:", data);
   } catch (error) {
-    console.error("Error parsing event body:", error);
+    console.error("Error parsing event body or unauthorized:", error);
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'Invalid request body', details: error.message }),
+      body: JSON.stringify({ error: 'Invalid request body or unauthorized', details: error.message }),
     };
   }
 
@@ -174,6 +197,7 @@ module.exports.deleteExam = async (event) => {
   console.log("DynamoDB delete params:", params);
 
   try {
+    authenticate(event);
     await dynamoDb.delete(params).promise();
     console.log("Exam deleted successfully with ID:", event.pathParameters.id);
     return {
@@ -181,10 +205,107 @@ module.exports.deleteExam = async (event) => {
       body: JSON.stringify({ message: 'Exam deleted' }),
     };
   } catch (error) {
-    console.error("Error deleting exam:", error);
+    console.error("Error deleting exam or unauthorized:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Could not delete exam', details: error.message }),
+      body: JSON.stringify({ error: 'Could not delete exam or unauthorized', details: error.message }),
     };
   }
+};
+
+module.exports.databaseTrigger = async (event) => {
+  console.log('Database Trigger Event:', JSON.stringify(event, null, 2));
+  for (const record of event.Records) {
+    console.log('DynamoDB Record:', JSON.stringify(record, null, 2));
+    if (record.eventName === 'INSERT') {
+      const newItem = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.NewImage);
+      console.log('New item inserted:', newItem);
+    } else if (record.eventName === 'MODIFY') {
+      const updatedItem = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.NewImage);
+      const oldItem = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.OldImage);
+      console.log('Item updated. New:', updatedItem, 'Old:', oldItem);
+    } else if (record.eventName === 'REMOVE') {
+      const deletedItem = AWS.DynamoDB.Converter.unmarshall(record.dynamodb.OldImage);
+      console.log('Item deleted:', deletedItem);
+    }
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'Database trigger executed' }),
+  };
+};
+
+
+module.exports.fileUpload = async (event) => {
+  const bucketName = 'exams-bucket';
+  const key = event.queryStringParameters.key;
+  const body = event.body;
+
+  const params = {
+    Bucket: bucketName,
+    Key: key,
+    Body: body,
+  };
+
+  await s3.putObject(params).promise();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'File uploaded successfully' }),
+  };
+};
+
+module.exports.messageHandler = async (event) => {
+  console.log('Message Event:', JSON.stringify(event, null, 2));
+  for (const record of event.Records) {
+    console.log('SQS Message:', JSON.stringify(record, null, 2));
+    const messageBody = JSON.parse(record.body);
+    console.log('Message Body:', messageBody);
+    if (messageBody.task === 'processData') {
+      await processData(messageBody.data);
+    } else if (messageBody.task === 'sendNotification') {
+      await sendNotification(messageBody.notificationDetails);
+    } else {
+      console.log('Unknown task:', messageBody.task);
+    }
+  }
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'Message handled' }),
+  };
+};
+
+const processData = async (data) => {
+  console.log('Processing data:', data);
+};
+
+const sendNotification = async (notificationDetails) => {
+  console.log('Sending notification:', notificationDetails);
+};
+
+
+module.exports.cronJob = async (event) => {
+  console.log('Cron Job Event:', JSON.stringify(event, null, 2));
+  try {
+    await cleanupOldData();
+    await sendScheduledNotifications();
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Cron job executed successfully' }),
+    };
+  } catch (error) {
+    console.error('Error executing cron job:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: 'Error executing cron job', error: error.message }),
+    };
+  }
+};
+
+const cleanupOldData = async () => {
+  console.log('Cleaning up old data...');
+};
+
+const sendScheduledNotifications = async () => {
+  console.log('Sending scheduled notifications...');
 };

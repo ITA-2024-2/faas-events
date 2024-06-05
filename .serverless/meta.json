@@ -15,6 +15,33 @@
         "runtime": "nodejs20.x",
         "stage": "dev",
         "region": "us-east-1",
+        "iam": {
+          "role": {
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "dynamodb:DescribeTable",
+                  "dynamodb:Query",
+                  "dynamodb:Scan",
+                  "dynamodb:GetItem",
+                  "dynamodb:PutItem",
+                  "dynamodb:UpdateItem",
+                  "dynamodb:DeleteItem",
+                  "dynamodb:ListStreams",
+                  "dynamodb:DescribeStream",
+                  "dynamodb:GetRecords",
+                  "dynamodb:GetShardIterator",
+                  "dynamodb:ListStreams"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:us-east-1:*:table/Exams",
+                  "arn:aws:dynamodb:us-east-1:*:table/Exams/stream/*"
+                ]
+              }
+            ]
+          }
+        },
         "versionFunctions": true,
         "compiledCloudFormationTemplate": {
           "AWSTemplateFormatVersion": "2010-09-09",
@@ -119,6 +146,30 @@
                 "LogGroupName": "/aws/lambda/exams-service-dev-deleteExam"
               }
             },
+            "DatabaseTriggerLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/exams-service-dev-databaseTrigger"
+              }
+            },
+            "FileUploadLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/exams-service-dev-fileUpload"
+              }
+            },
+            "MessageHandlerLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/exams-service-dev-messageHandler"
+              }
+            },
+            "CronJobLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/exams-service-dev-cronJob"
+              }
+            },
             "IamRoleLambdaExecution": {
               "Type": "AWS::IAM::Role",
               "Properties": {
@@ -176,6 +227,60 @@
                               "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/exams-service-dev*:*:*"
                             }
                           ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "dynamodb:DescribeTable",
+                            "dynamodb:Query",
+                            "dynamodb:Scan",
+                            "dynamodb:GetItem",
+                            "dynamodb:PutItem",
+                            "dynamodb:UpdateItem",
+                            "dynamodb:DeleteItem",
+                            "dynamodb:ListStreams",
+                            "dynamodb:DescribeStream",
+                            "dynamodb:GetRecords",
+                            "dynamodb:GetShardIterator",
+                            "dynamodb:ListStreams"
+                          ],
+                          "Resource": [
+                            "arn:aws:dynamodb:us-east-1:*:table/Exams",
+                            "arn:aws:dynamodb:us-east-1:*:table/Exams/stream/*"
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "dynamodb:GetRecords",
+                            "dynamodb:GetShardIterator",
+                            "dynamodb:DescribeStream",
+                            "dynamodb:ListStreams"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::GetAtt": [
+                                "DynamoDBTable",
+                                "StreamArn"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "sqs:ReceiveMessage",
+                            "sqs:DeleteMessage",
+                            "sqs:GetQueueAttributes"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::GetAtt": [
+                                "SQSQueue",
+                                "Arn"
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -204,7 +309,7 @@
                   "S3Bucket": {
                     "Ref": "ServerlessDeploymentBucket"
                   },
-                  "S3Key": "serverless/exams-service/dev/1717599702364-2024-06-05T15:01:42.364Z/exams-service.zip"
+                  "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
                 },
                 "Handler": "handler.createExam",
                 "Runtime": "nodejs20.x",
@@ -229,7 +334,7 @@
                   "S3Bucket": {
                     "Ref": "ServerlessDeploymentBucket"
                   },
-                  "S3Key": "serverless/exams-service/dev/1717599702364-2024-06-05T15:01:42.364Z/exams-service.zip"
+                  "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
                 },
                 "Handler": "handler.getAllExams",
                 "Runtime": "nodejs20.x",
@@ -254,7 +359,7 @@
                   "S3Bucket": {
                     "Ref": "ServerlessDeploymentBucket"
                   },
-                  "S3Key": "serverless/exams-service/dev/1717599702364-2024-06-05T15:01:42.364Z/exams-service.zip"
+                  "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
                 },
                 "Handler": "handler.getExam",
                 "Runtime": "nodejs20.x",
@@ -279,7 +384,7 @@
                   "S3Bucket": {
                     "Ref": "ServerlessDeploymentBucket"
                   },
-                  "S3Key": "serverless/exams-service/dev/1717599702364-2024-06-05T15:01:42.364Z/exams-service.zip"
+                  "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
                 },
                 "Handler": "handler.updateExam",
                 "Runtime": "nodejs20.x",
@@ -304,7 +409,7 @@
                   "S3Bucket": {
                     "Ref": "ServerlessDeploymentBucket"
                   },
-                  "S3Key": "serverless/exams-service/dev/1717599702364-2024-06-05T15:01:42.364Z/exams-service.zip"
+                  "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
                 },
                 "Handler": "handler.deleteExam",
                 "Runtime": "nodejs20.x",
@@ -322,54 +427,231 @@
                 "DeleteExamLogGroup"
               ]
             },
-            "CreateExamLambdaVersionwb7AMPGJKGqZImTpmrEzkcKYxN1SY6haSIOEgPHNCg": {
+            "DatabaseTriggerLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": {
+                    "Ref": "ServerlessDeploymentBucket"
+                  },
+                  "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                },
+                "Handler": "handler.databaseTrigger",
+                "Runtime": "nodejs20.x",
+                "FunctionName": "exams-service-dev-databaseTrigger",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "DatabaseTriggerLogGroup"
+              ]
+            },
+            "FileUploadLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": {
+                    "Ref": "ServerlessDeploymentBucket"
+                  },
+                  "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                },
+                "Handler": "handler.fileUpload",
+                "Runtime": "nodejs20.x",
+                "FunctionName": "exams-service-dev-fileUpload",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "FileUploadLogGroup"
+              ]
+            },
+            "MessageHandlerLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": {
+                    "Ref": "ServerlessDeploymentBucket"
+                  },
+                  "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                },
+                "Handler": "handler.messageHandler",
+                "Runtime": "nodejs20.x",
+                "FunctionName": "exams-service-dev-messageHandler",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "MessageHandlerLogGroup"
+              ]
+            },
+            "CronJobLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": {
+                    "Ref": "ServerlessDeploymentBucket"
+                  },
+                  "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                },
+                "Handler": "handler.cronJob",
+                "Runtime": "nodejs20.x",
+                "FunctionName": "exams-service-dev-cronJob",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "CronJobLogGroup"
+              ]
+            },
+            "CreateExamLambdaVersion5cnpxxVfBR5dLwUaiO6XnlpD8ntu4XDyWnCiBXALo": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "CreateExamLambdaFunction"
                 },
-                "CodeSha256": "xmw7WLFl18eaovnfPfpKirXGlWgJcbhGrMeaAVrA6dc="
+                "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
               }
             },
-            "GetAllExamsLambdaVersionKJdq1qRMQoXwlqH7Y3BwRm3YPlqV0UkkorcZOxLk": {
+            "GetAllExamsLambdaVersionxISw7e3qbHML7mMlWOS8cr1ffbMM0dcmY5JFIxTNq3Y": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "GetAllExamsLambdaFunction"
                 },
-                "CodeSha256": "xmw7WLFl18eaovnfPfpKirXGlWgJcbhGrMeaAVrA6dc="
+                "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
               }
             },
-            "GetExamLambdaVersion9Hyt7jxuT5cPN5YOB8BpLwUnjleGaNnkUgDJdUUp8": {
+            "GetExamLambdaVersiongO6sIG1YxPGWWsmodyI9GOq7vJ1PuiJMSo2Vfz5hQlE": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "GetExamLambdaFunction"
                 },
-                "CodeSha256": "xmw7WLFl18eaovnfPfpKirXGlWgJcbhGrMeaAVrA6dc="
+                "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
               }
             },
-            "UpdateExamLambdaVersionc3eT4V4wT06Td1KWrwZIkTKFH7bFkkuvItvqNYo": {
+            "UpdateExamLambdaVersioncltLNGrCcuHqkLdSbktwvwl8XaKFhpVymJfAiJrazg": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "UpdateExamLambdaFunction"
                 },
-                "CodeSha256": "xmw7WLFl18eaovnfPfpKirXGlWgJcbhGrMeaAVrA6dc="
+                "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
               }
             },
-            "DeleteExamLambdaVersion0CAixTMZAwlHGP2pcecbXn389toP5QZZEfTD2KnO3Y": {
+            "DeleteExamLambdaVersionDXW2w1D5TX9MUYlgV0bcvWd405IOJZo45AqBNSNXeA": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "DeleteExamLambdaFunction"
                 },
-                "CodeSha256": "xmw7WLFl18eaovnfPfpKirXGlWgJcbhGrMeaAVrA6dc="
+                "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              }
+            },
+            "DatabaseTriggerLambdaVersionmjC3JWZuMhT7WvBYkGPMslq8dvudTcbD4bOsJQjZxU": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "DatabaseTriggerLambdaFunction"
+                },
+                "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              }
+            },
+            "FileUploadLambdaVersionw8LIfZmmZyBKF7Q5FPnuE6wP1hEocuyQZi00WxTXg4": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "FileUploadLambdaFunction"
+                },
+                "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              }
+            },
+            "MessageHandlerLambdaVersionpyXXM99uEwHitfkCuGGxEF9pliVhyqMwsjx02oGDGo": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "MessageHandlerLambdaFunction"
+                },
+                "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              }
+            },
+            "CronJobLambdaVersionrlP8fVQNZJwnTH8VmWO6JkWdWWXDl5ZjhdMHxunB8": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "CronJobLambdaFunction"
+                },
+                "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              }
+            },
+            "CronJobEventsRuleSchedule1": {
+              "Type": "AWS::Events::Rule",
+              "Properties": {
+                "ScheduleExpression": "rate(1 hour)",
+                "State": "ENABLED",
+                "Targets": [
+                  {
+                    "Arn": {
+                      "Fn::GetAtt": [
+                        "CronJobLambdaFunction",
+                        "Arn"
+                      ]
+                    },
+                    "Id": "cronJobSchedule"
+                  }
+                ]
+              }
+            },
+            "CronJobLambdaPermissionEventsRuleSchedule1": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "CronJobLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "events.amazonaws.com",
+                "SourceArn": {
+                  "Fn::GetAtt": [
+                    "CronJobEventsRuleSchedule1",
+                    "Arn"
+                  ]
+                }
               }
             },
             "ApiGatewayRestApi": {
@@ -406,6 +688,156 @@
                   "Ref": "ApiGatewayResourceExams"
                 },
                 "PathPart": "{id}",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayResourceFileDashupload": {
+              "Type": "AWS::ApiGateway::Resource",
+              "Properties": {
+                "ParentId": {
+                  "Fn::GetAtt": [
+                    "ApiGatewayRestApi",
+                    "RootResourceId"
+                  ]
+                },
+                "PathPart": "file-upload",
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodExamsOptions": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "AuthorizationType": "NONE",
+                "HttpMethod": "OPTIONS",
+                "MethodResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": true,
+                      "method.response.header.Access-Control-Allow-Headers": true,
+                      "method.response.header.Access-Control-Allow-Methods": true
+                    },
+                    "ResponseModels": {}
+                  }
+                ],
+                "RequestParameters": {},
+                "Integration": {
+                  "Type": "MOCK",
+                  "RequestTemplates": {
+                    "application/json": "{statusCode:200}"
+                  },
+                  "ContentHandling": "CONVERT_TO_TEXT",
+                  "IntegrationResponses": [
+                    {
+                      "StatusCode": "200",
+                      "ResponseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,POST'"
+                      },
+                      "ResponseTemplates": {
+                        "application/json": ""
+                      }
+                    }
+                  ]
+                },
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceExams"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodExamsIdVarOptions": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "AuthorizationType": "NONE",
+                "HttpMethod": "OPTIONS",
+                "MethodResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": true,
+                      "method.response.header.Access-Control-Allow-Headers": true,
+                      "method.response.header.Access-Control-Allow-Methods": true
+                    },
+                    "ResponseModels": {}
+                  }
+                ],
+                "RequestParameters": {},
+                "Integration": {
+                  "Type": "MOCK",
+                  "RequestTemplates": {
+                    "application/json": "{statusCode:200}"
+                  },
+                  "ContentHandling": "CONVERT_TO_TEXT",
+                  "IntegrationResponses": [
+                    {
+                      "StatusCode": "200",
+                      "ResponseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,PUT,GET'"
+                      },
+                      "ResponseTemplates": {
+                        "application/json": ""
+                      }
+                    }
+                  ]
+                },
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceExamsIdVar"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                }
+              }
+            },
+            "ApiGatewayMethodFileDashuploadOptions": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "AuthorizationType": "NONE",
+                "HttpMethod": "OPTIONS",
+                "MethodResponses": [
+                  {
+                    "StatusCode": "200",
+                    "ResponseParameters": {
+                      "method.response.header.Access-Control-Allow-Origin": true,
+                      "method.response.header.Access-Control-Allow-Headers": true,
+                      "method.response.header.Access-Control-Allow-Methods": true
+                    },
+                    "ResponseModels": {}
+                  }
+                ],
+                "RequestParameters": {},
+                "Integration": {
+                  "Type": "MOCK",
+                  "RequestTemplates": {
+                    "application/json": "{statusCode:200}"
+                  },
+                  "ContentHandling": "CONVERT_TO_TEXT",
+                  "IntegrationResponses": [
+                    {
+                      "StatusCode": "200",
+                      "ResponseParameters": {
+                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent,X-Amzn-Trace-Id'",
+                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+                      },
+                      "ResponseTemplates": {
+                        "application/json": ""
+                      }
+                    }
+                  ]
+                },
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceFileDashupload"
+                },
                 "RestApiId": {
                   "Ref": "ApiGatewayRestApi"
                 }
@@ -641,7 +1073,53 @@
                 "DeleteExamLambdaPermissionApiGateway"
               ]
             },
-            "ApiGatewayDeployment1717599700982": {
+            "ApiGatewayMethodFileDashuploadPost": {
+              "Type": "AWS::ApiGateway::Method",
+              "Properties": {
+                "HttpMethod": "POST",
+                "RequestParameters": {},
+                "ResourceId": {
+                  "Ref": "ApiGatewayResourceFileDashupload"
+                },
+                "RestApiId": {
+                  "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": "<REDACTED>",
+                "AuthorizationType": "NONE",
+                "Integration": {
+                  "IntegrationHttpMethod": "POST",
+                  "Type": "AWS_PROXY",
+                  "Uri": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition"
+                        },
+                        ":apigateway:",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        ":lambda:path/2015-03-31/functions/",
+                        {
+                          "Fn::GetAtt": [
+                            "FileUploadLambdaFunction",
+                            "Arn"
+                          ]
+                        },
+                        "/invocations"
+                      ]
+                    ]
+                  }
+                },
+                "MethodResponses": []
+              },
+              "DependsOn": [
+                "FileUploadLambdaPermissionApiGateway"
+              ]
+            },
+            "ApiGatewayDeployment1717606505606": {
               "Type": "AWS::ApiGateway::Deployment",
               "Properties": {
                 "RestApiId": {
@@ -650,11 +1128,15 @@
                 "StageName": "dev"
               },
               "DependsOn": [
+                "ApiGatewayMethodExamsOptions",
+                "ApiGatewayMethodExamsIdVarOptions",
+                "ApiGatewayMethodFileDashuploadOptions",
                 "ApiGatewayMethodExamsPost",
                 "ApiGatewayMethodExamsGet",
                 "ApiGatewayMethodExamsIdVarGet",
                 "ApiGatewayMethodExamsIdVarPut",
-                "ApiGatewayMethodExamsIdVarDelete"
+                "ApiGatewayMethodExamsIdVarDelete",
+                "ApiGatewayMethodFileDashuploadPost"
               ]
             },
             "CreateExamLambdaPermissionApiGateway": {
@@ -842,7 +1324,89 @@
                 }
               }
             },
-            "ExamsTable": {
+            "FileUploadLambdaPermissionApiGateway": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "FileUploadLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "ApiGatewayRestApi"
+                      },
+                      "/*/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "DatabaseTriggerEventSourceMappingDynamodbDynamoDBTable": {
+              "Type": "AWS::Lambda::EventSourceMapping",
+              "DependsOn": [
+                "IamRoleLambdaExecution"
+              ],
+              "Properties": {
+                "BatchSize": 10,
+                "Enabled": true,
+                "EventSourceArn": {
+                  "Fn::GetAtt": [
+                    "DynamoDBTable",
+                    "StreamArn"
+                  ]
+                },
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "DatabaseTriggerLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "StartingPosition": "TRIM_HORIZON"
+              }
+            },
+            "MessageHandlerEventSourceMappingSQSSQSQueue": {
+              "Type": "AWS::Lambda::EventSourceMapping",
+              "DependsOn": [
+                "IamRoleLambdaExecution"
+              ],
+              "Properties": {
+                "BatchSize": 10,
+                "EventSourceArn": {
+                  "Fn::GetAtt": [
+                    "SQSQueue",
+                    "Arn"
+                  ]
+                },
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "MessageHandlerLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Enabled": true
+              }
+            },
+            "DynamoDBTable": {
               "Type": "AWS::DynamoDB::Table",
               "Properties": {
                 "TableName": "Exams",
@@ -861,7 +1425,16 @@
                 "ProvisionedThroughput": {
                   "ReadCapacityUnits": 1,
                   "WriteCapacityUnits": 1
+                },
+                "StreamSpecification": {
+                  "StreamViewType": "NEW_IMAGE"
                 }
+              }
+            },
+            "SQSQueue": {
+              "Type": "AWS::SQS::Queue",
+              "Properties": {
+                "QueueName": "faas-events-queue"
               }
             }
           },
@@ -877,7 +1450,7 @@
             "CreateExamLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "CreateExamLambdaVersionwb7AMPGJKGqZImTpmrEzkcKYxN1SY6haSIOEgPHNCg"
+                "Ref": "CreateExamLambdaVersion5cnpxxVfBR5dLwUaiO6XnlpD8ntu4XDyWnCiBXALo"
               },
               "Export": {
                 "Name": "sls-exams-service-dev-CreateExamLambdaFunctionQualifiedArn"
@@ -886,7 +1459,7 @@
             "GetAllExamsLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "GetAllExamsLambdaVersionKJdq1qRMQoXwlqH7Y3BwRm3YPlqV0UkkorcZOxLk"
+                "Ref": "GetAllExamsLambdaVersionxISw7e3qbHML7mMlWOS8cr1ffbMM0dcmY5JFIxTNq3Y"
               },
               "Export": {
                 "Name": "sls-exams-service-dev-GetAllExamsLambdaFunctionQualifiedArn"
@@ -895,7 +1468,7 @@
             "GetExamLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "GetExamLambdaVersion9Hyt7jxuT5cPN5YOB8BpLwUnjleGaNnkUgDJdUUp8"
+                "Ref": "GetExamLambdaVersiongO6sIG1YxPGWWsmodyI9GOq7vJ1PuiJMSo2Vfz5hQlE"
               },
               "Export": {
                 "Name": "sls-exams-service-dev-GetExamLambdaFunctionQualifiedArn"
@@ -904,7 +1477,7 @@
             "UpdateExamLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "UpdateExamLambdaVersionc3eT4V4wT06Td1KWrwZIkTKFH7bFkkuvItvqNYo"
+                "Ref": "UpdateExamLambdaVersioncltLNGrCcuHqkLdSbktwvwl8XaKFhpVymJfAiJrazg"
               },
               "Export": {
                 "Name": "sls-exams-service-dev-UpdateExamLambdaFunctionQualifiedArn"
@@ -913,10 +1486,46 @@
             "DeleteExamLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "DeleteExamLambdaVersion0CAixTMZAwlHGP2pcecbXn389toP5QZZEfTD2KnO3Y"
+                "Ref": "DeleteExamLambdaVersionDXW2w1D5TX9MUYlgV0bcvWd405IOJZo45AqBNSNXeA"
               },
               "Export": {
                 "Name": "sls-exams-service-dev-DeleteExamLambdaFunctionQualifiedArn"
+              }
+            },
+            "DatabaseTriggerLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "DatabaseTriggerLambdaVersionmjC3JWZuMhT7WvBYkGPMslq8dvudTcbD4bOsJQjZxU"
+              },
+              "Export": {
+                "Name": "sls-exams-service-dev-DatabaseTriggerLambdaFunctionQualifiedArn"
+              }
+            },
+            "FileUploadLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "FileUploadLambdaVersionw8LIfZmmZyBKF7Q5FPnuE6wP1hEocuyQZi00WxTXg4"
+              },
+              "Export": {
+                "Name": "sls-exams-service-dev-FileUploadLambdaFunctionQualifiedArn"
+              }
+            },
+            "MessageHandlerLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "MessageHandlerLambdaVersionpyXXM99uEwHitfkCuGGxEF9pliVhyqMwsjx02oGDGo"
+              },
+              "Export": {
+                "Name": "sls-exams-service-dev-MessageHandlerLambdaFunctionQualifiedArn"
+              }
+            },
+            "CronJobLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "CronJobLambdaVersionrlP8fVQNZJwnTH8VmWO6JkWdWWXDl5ZjhdMHxunB8"
+              },
+              "Export": {
+                "Name": "sls-exams-service-dev-CronJobLambdaFunctionQualifiedArn"
               }
             },
             "ServiceEndpoint": {
@@ -1039,6 +1648,23 @@
               "http": {
                 "path": "exams",
                 "method": "post",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "POST"
+                  ],
+                  "headers": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
                 "integration": "AWS_PROXY"
               }
             }
@@ -1049,7 +1675,7 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "CreateExamLambdaVersionwb7AMPGJKGqZImTpmrEzkcKYxN1SY6haSIOEgPHNCg"
+          "versionLogicalId": "CreateExamLambdaVersion5cnpxxVfBR5dLwUaiO6XnlpD8ntu4XDyWnCiBXALo"
         },
         "getAllExams": {
           "handler": "handler.getAllExams",
@@ -1058,6 +1684,23 @@
               "http": {
                 "path": "exams",
                 "method": "get",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "GET"
+                  ],
+                  "headers": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
                 "integration": "AWS_PROXY"
               }
             }
@@ -1068,7 +1711,7 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "GetAllExamsLambdaVersionKJdq1qRMQoXwlqH7Y3BwRm3YPlqV0UkkorcZOxLk"
+          "versionLogicalId": "GetAllExamsLambdaVersionxISw7e3qbHML7mMlWOS8cr1ffbMM0dcmY5JFIxTNq3Y"
         },
         "getExam": {
           "handler": "handler.getExam",
@@ -1077,6 +1720,23 @@
               "http": {
                 "path": "exams/{id}",
                 "method": "get",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "GET"
+                  ],
+                  "headers": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
                 "integration": "AWS_PROXY"
               }
             }
@@ -1087,7 +1747,7 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "GetExamLambdaVersion9Hyt7jxuT5cPN5YOB8BpLwUnjleGaNnkUgDJdUUp8"
+          "versionLogicalId": "GetExamLambdaVersiongO6sIG1YxPGWWsmodyI9GOq7vJ1PuiJMSo2Vfz5hQlE"
         },
         "updateExam": {
           "handler": "handler.updateExam",
@@ -1096,6 +1756,23 @@
               "http": {
                 "path": "exams/{id}",
                 "method": "put",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "PUT"
+                  ],
+                  "headers": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
                 "integration": "AWS_PROXY"
               }
             }
@@ -1106,7 +1783,7 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "UpdateExamLambdaVersionc3eT4V4wT06Td1KWrwZIkTKFH7bFkkuvItvqNYo"
+          "versionLogicalId": "UpdateExamLambdaVersioncltLNGrCcuHqkLdSbktwvwl8XaKFhpVymJfAiJrazg"
         },
         "deleteExam": {
           "handler": "handler.deleteExam",
@@ -1115,6 +1792,23 @@
               "http": {
                 "path": "exams/{id}",
                 "method": "delete",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "DELETE"
+                  ],
+                  "headers": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
                 "integration": "AWS_PROXY"
               }
             }
@@ -1125,12 +1819,140 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "DeleteExamLambdaVersion0CAixTMZAwlHGP2pcecbXn389toP5QZZEfTD2KnO3Y"
+          "versionLogicalId": "DeleteExamLambdaVersionDXW2w1D5TX9MUYlgV0bcvWd405IOJZo45AqBNSNXeA"
+        },
+        "databaseTrigger": {
+          "handler": "handler.databaseTrigger",
+          "events": [
+            {
+              "stream": {
+                "type": "dynamodb",
+                "arn": {
+                  "Fn::GetAtt": [
+                    "DynamoDBTable",
+                    "StreamArn"
+                  ]
+                }
+              }
+            }
+          ],
+          "name": "exams-service-dev-databaseTrigger",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs20.x",
+          "vpc": {},
+          "versionLogicalId": "DatabaseTriggerLambdaVersionmjC3JWZuMhT7WvBYkGPMslq8dvudTcbD4bOsJQjZxU"
+        },
+        "fileUpload": {
+          "handler": "handler.fileUpload",
+          "events": [
+            {
+              "http": {
+                "path": "file-upload",
+                "method": "post",
+                "cors": {
+                  "origin": "*",
+                  "methods": [
+                    "OPTIONS",
+                    "POST"
+                  ],
+                  "headers": [
+                    "Content-Type",
+                    "X-Amz-Date",
+                    "Authorization",
+                    "X-Api-Key",
+                    "X-Amz-Security-Token",
+                    "X-Amz-User-Agent",
+                    "X-Amzn-Trace-Id"
+                  ],
+                  "allowCredentials": "<REDACTED>"
+                },
+                "integration": "AWS_PROXY"
+              }
+            }
+          ],
+          "name": "exams-service-dev-fileUpload",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs20.x",
+          "vpc": {},
+          "versionLogicalId": "FileUploadLambdaVersionw8LIfZmmZyBKF7Q5FPnuE6wP1hEocuyQZi00WxTXg4"
+        },
+        "messageHandler": {
+          "handler": "handler.messageHandler",
+          "events": [
+            {
+              "sqs": {
+                "arn": {
+                  "Fn::GetAtt": [
+                    "SQSQueue",
+                    "Arn"
+                  ]
+                }
+              }
+            }
+          ],
+          "name": "exams-service-dev-messageHandler",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs20.x",
+          "vpc": {},
+          "versionLogicalId": "MessageHandlerLambdaVersionpyXXM99uEwHitfkCuGGxEF9pliVhyqMwsjx02oGDGo"
+        },
+        "cronJob": {
+          "handler": "handler.cronJob",
+          "events": [
+            {
+              "schedule": {
+                "rate": [
+                  "rate(1 hour)"
+                ]
+              }
+            }
+          ],
+          "name": "exams-service-dev-cronJob",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs20.x",
+          "vpc": {},
+          "versionLogicalId": "CronJobLambdaVersionrlP8fVQNZJwnTH8VmWO6JkWdWWXDl5ZjhdMHxunB8"
+        }
+      },
+      "plugins": [
+        "serverless-plugin-common-excludes",
+        "serverless-plugin-include-dependencies",
+        "serverless-offline"
+      ],
+      "custom": {
+        "esbuild": {
+          "bundle": true,
+          "minify": false,
+          "sourcemap": true,
+          "target": "node20",
+          "define": {
+            "require.resolve": "undefined"
+          },
+          "platform": "node",
+          "concurrency": 10
+        },
+        "commonExcludes": [
+          "**/*.md",
+          "**/*.spec.js",
+          "**/__tests__/**"
+        ],
+        "includeDependencies": {
+          "forceInclude": [
+            "knex"
+          ]
         }
       },
       "resources": {
         "Resources": {
-          "ExamsTable": {
+          "DynamoDBTable": {
             "Type": "AWS::DynamoDB::Table",
             "Properties": {
               "TableName": "Exams",
@@ -1149,14 +1971,23 @@
               "ProvisionedThroughput": {
                 "ReadCapacityUnits": 1,
                 "WriteCapacityUnits": 1
+              },
+              "StreamSpecification": {
+                "StreamViewType": "NEW_IMAGE"
               }
+            }
+          },
+          "SQSQueue": {
+            "Type": "AWS::SQS::Queue",
+            "Properties": {
+              "QueueName": "faas-events-queue"
             }
           }
         },
         "Outputs": {}
       }
     },
-    "serviceRawFile": "org: 89acat\napp: vaja8\nservice: exams-service\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  stage: dev\n  region: us-east-1\n\nfunctions:\n  createExam:\n    handler: handler.createExam\n    events:\n      - http:\n          path: exams\n          method: post\n  getAllExams:\n    handler: handler.getAllExams\n    events:\n      - http:\n          path: exams\n          method: get\n  getExam:\n    handler: handler.getExam\n    events:\n      - http:\n          path: exams/{id}\n          method: get\n  updateExam:\n    handler: handler.updateExam\n    events:\n      - http:\n          path: exams/{id}\n          method: put\n  deleteExam:\n    handler: handler.deleteExam\n    events:\n      - http:\n          path: exams/{id}\n          method: delete\n\nresources:\n  Resources:\n    ExamsTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: Exams\n        AttributeDefinitions:\n          - AttributeName: id\n            AttributeType: S\n        KeySchema:\n          - AttributeName: id\n            KeyType: HASH\n        ProvisionedThroughput:\n          ReadCapacityUnits: 1\n          WriteCapacityUnits: 1\n",
+    "serviceRawFile": "org: 89acat\napp: vaja8\nservice: exams-service\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  stage: dev\n  region: us-east-1\n  iam:\n    role:\n      statements:\n        - Effect: Allow\n          Action:\n            - dynamodb:DescribeTable\n            - dynamodb:Query\n            - dynamodb:Scan\n            - dynamodb:GetItem\n            - dynamodb:PutItem\n            - dynamodb:UpdateItem\n            - dynamodb:DeleteItem\n            - dynamodb:ListStreams\n            - dynamodb:DescribeStream\n            - dynamodb:GetRecords\n            - dynamodb:GetShardIterator\n            - dynamodb:ListStreams\n          Resource:\n            - arn:aws:dynamodb:us-east-1:*:table/Exams\n            - arn:aws:dynamodb:us-east-1:*:table/Exams/stream/*\n\nfunctions:\n  createExam:\n    handler: handler.createExam\n    events:\n      - http:\n          path: exams\n          method: post\n          cors: true\n\n  getAllExams:\n    handler: handler.getAllExams\n    events:\n      - http:\n          path: exams\n          method: get\n          cors: true\n\n  getExam:\n    handler: handler.getExam\n    events:\n      - http:\n          path: exams/{id}\n          method: get\n          cors: true\n\n  updateExam:\n    handler: handler.updateExam\n    events:\n      - http:\n          path: exams/{id}\n          method: put\n          cors: true\n\n  deleteExam:\n    handler: handler.deleteExam\n    events:\n      - http:\n          path: exams/{id}\n          method: delete\n          cors: true\n\n  databaseTrigger:\n    handler: handler.databaseTrigger\n    events:\n      - stream:\n          type: dynamodb\n          arn:\n            Fn::GetAtt:\n              - DynamoDBTable\n              - StreamArn\n\n  fileUpload:\n    handler: handler.fileUpload\n    events:\n      - http:\n          path: file-upload\n          method: post\n          cors: true\n\n  messageHandler:\n      handler: handler.messageHandler\n      events:\n        - sqs:\n            arn:\n              Fn::GetAtt:\n                - SQSQueue\n                - Arn\n\n  cronJob:\n    handler: handler.cronJob\n    events:\n      - schedule:\n          rate: rate(1 hour)\n\nplugins:\n  - serverless-plugin-common-excludes\n  - serverless-plugin-include-dependencies\n  - serverless-offline\n\ncustom:\n  esbuild:\n    bundle: true\n    minify: false\n    sourcemap: true\n    target: 'node20'\n    define:\n      'require.resolve': undefined\n    platform: 'node'\n    concurrency: 10\n\n  commonExcludes:\n    - '**/*.md'\n    - '**/*.spec.js'\n    - '**/__tests__/**'\n\n  includeDependencies:\n      forceInclude:\n        - knex\n\nresources:\n  Resources:\n    DynamoDBTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: Exams\n        AttributeDefinitions:\n          - AttributeName: id\n            AttributeType: S\n        KeySchema:\n          - AttributeName: id\n            KeyType: HASH\n        ProvisionedThroughput:\n          ReadCapacityUnits: 1\n          WriteCapacityUnits: 1\n        StreamSpecification:\n          StreamViewType: NEW_IMAGE\n\n    SQSQueue:\n      Type: AWS::SQS::Queue\n      Properties:\n        QueueName: faas-events-queue",
     "command": [
       "deploy"
     ],
@@ -1196,51 +2027,75 @@
     "serviceProviderAwsAccountId": "851725359995",
     "versionSf": "4.0.35",
     "serviceProviderAwsCfStackName": "exams-service-dev",
-    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:851725359995:stack/exams-service-dev/8fcbb670-2346-11ef-9973-0affd2c8bcaf",
-    "serviceProviderAwsCfStackCreated": "2024-06-05T14:19:04.077Z",
-    "serviceProviderAwsCfStackUpdated": "2024-06-05T15:02:13.955Z",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:851725359995:stack/exams-service-dev/4087a3a0-2358-11ef-a126-0eae9f5bc677",
+    "serviceProviderAwsCfStackCreated": "2024-06-05T16:25:41.913Z",
+    "serviceProviderAwsCfStackUpdated": "2024-06-05T16:55:45.872Z",
     "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "GetExamLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-getExam:4",
+        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-getExam:11",
         "Description": "Current Lambda function version",
         "ExportName": "sls-exams-service-dev-GetExamLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "UpdateExamLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-updateExam:4",
+        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-updateExam:11",
         "Description": "Current Lambda function version",
         "ExportName": "sls-exams-service-dev-UpdateExamLambdaFunctionQualifiedArn"
       },
       {
         "OutputKey": "GetAllExamsLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-getAllExams:5",
+        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-getAllExams:12",
         "Description": "Current Lambda function version",
         "ExportName": "sls-exams-service-dev-GetAllExamsLambdaFunctionQualifiedArn"
       },
       {
+        "OutputKey": "CronJobLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-cronJob:4",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-exams-service-dev-CronJobLambdaFunctionQualifiedArn"
+      },
+      {
         "OutputKey": "CreateExamLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-createExam:4",
+        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-createExam:10",
         "Description": "Current Lambda function version",
         "ExportName": "sls-exams-service-dev-CreateExamLambdaFunctionQualifiedArn"
       },
       {
+        "OutputKey": "MessageHandlerLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-messageHandler:4",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-exams-service-dev-MessageHandlerLambdaFunctionQualifiedArn"
+      },
+      {
         "OutputKey": "DeleteExamLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-deleteExam:5",
+        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-deleteExam:12",
         "Description": "Current Lambda function version",
         "ExportName": "sls-exams-service-dev-DeleteExamLambdaFunctionQualifiedArn"
       },
       {
+        "OutputKey": "DatabaseTriggerLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-databaseTrigger:4",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-exams-service-dev-DatabaseTriggerLambdaFunctionQualifiedArn"
+      },
+      {
         "OutputKey": "ServiceEndpoint",
-        "OutputValue": "https://pz9g7qrxt3.execute-api.us-east-1.amazonaws.com/dev",
+        "OutputValue": "https://gvt1224fn5.execute-api.us-east-1.amazonaws.com/dev",
         "Description": "URL of the service endpoint",
         "ExportName": "sls-exams-service-dev-ServiceEndpoint"
       },
       {
         "OutputKey": "ServerlessDeploymentBucketName",
-        "OutputValue": "exams-service-dev-serverlessdeploymentbucket-zeyngvyq2c00",
+        "OutputValue": "exams-service-dev-serverlessdeploymentbucket-mh2tylztzdml",
         "ExportName": "sls-exams-service-dev-ServerlessDeploymentBucketName"
+      },
+      {
+        "OutputKey": "FileUploadLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:851725359995:function:exams-service-dev-fileUpload:6",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-exams-service-dev-FileUploadLambdaFunctionQualifiedArn"
       }
     ]
   }

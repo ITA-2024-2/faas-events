@@ -7,6 +7,26 @@ provider:
   runtime: nodejs20.x
   stage: dev
   region: us-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+            - dynamodb:ListStreams
+            - dynamodb:DescribeStream
+            - dynamodb:GetRecords
+            - dynamodb:GetShardIterator
+            - dynamodb:ListStreams
+          Resource:
+            - arn:aws:dynamodb:us-east-1:*:table/Exams
+            - arn:aws:dynamodb:us-east-1:*:table/Exams/stream/*
 
 functions:
   createExam:
@@ -15,34 +35,101 @@ functions:
       - http:
           path: exams
           method: post
+          cors: true
+
   getAllExams:
     handler: handler.getAllExams
     events:
       - http:
           path: exams
           method: get
+          cors: true
+
   getExam:
     handler: handler.getExam
     events:
       - http:
           path: exams/{id}
           method: get
+          cors: true
+
   updateExam:
     handler: handler.updateExam
     events:
       - http:
           path: exams/{id}
           method: put
+          cors: true
+
   deleteExam:
     handler: handler.deleteExam
     events:
       - http:
           path: exams/{id}
           method: delete
+          cors: true
+
+  databaseTrigger:
+    handler: handler.databaseTrigger
+    events:
+      - stream:
+          type: dynamodb
+          arn:
+            Fn::GetAtt:
+              - DynamoDBTable
+              - StreamArn
+
+  fileUpload:
+    handler: handler.fileUpload
+    events:
+      - http:
+          path: file-upload
+          method: post
+          cors: true
+
+  messageHandler:
+      handler: handler.messageHandler
+      events:
+        - sqs:
+            arn:
+              Fn::GetAtt:
+                - SQSQueue
+                - Arn
+
+  cronJob:
+    handler: handler.cronJob
+    events:
+      - schedule:
+          rate: rate(1 hour)
+
+plugins:
+  - serverless-plugin-common-excludes
+  - serverless-plugin-include-dependencies
+  - serverless-offline
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    target: 'node20'
+    define:
+      'require.resolve': undefined
+    platform: 'node'
+    concurrency: 10
+
+  commonExcludes:
+    - '**/*.md'
+    - '**/*.spec.js'
+    - '**/__tests__/**'
+
+  includeDependencies:
+      forceInclude:
+        - knex
 
 resources:
   Resources:
-    ExamsTable:
+    DynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: Exams
@@ -55,3 +142,10 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
+
+    SQSQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: faas-events-queue

@@ -11,6 +11,15 @@
   "description": "",
   "dependencies": {
     "aws-sdk": "^2.1634.0",
+    "jsonwebtoken": "^9.0.2",
     "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "serverless-esbuild": "^1.52.1",
+    "serverless-offline": "^13.6.0",
+    "serverless-plugin-common-excludes": "^4.0.0",
+    "serverless-plugin-include-dependencies": "^6.1.0",
+    "serverless-webpack": "^5.14.0",
+    "webpack": "^5.91.0"
   }
 }
