@@ -1,0 +1,12 @@
+endpoints:
+  POST - https://pz9g7qrxt3.execute-api.us-east-1.amazonaws.com/dev/exams
+  GET - https://pz9g7qrxt3.execute-api.us-east-1.amazonaws.com/dev/exams
+  GET - https://pz9g7qrxt3.execute-api.us-east-1.amazonaws.com/dev/exams/{id}
+  PUT - https://pz9g7qrxt3.execute-api.us-east-1.amazonaws.com/dev/exams/{id}
+  DELETE - https://pz9g7qrxt3.execute-api.us-east-1.amazonaws.com/dev/exams/{id}
+functions:
+  createExam: exams-service-dev-createExam (19 MB)
+  getAllExams: exams-service-dev-getAllExams (19 MB)
+  getExam: exams-service-dev-getExam (19 MB)
+  updateExam: exams-service-dev-updateExam (19 MB)
+  deleteExam: exams-service-dev-deleteExam (19 MB)

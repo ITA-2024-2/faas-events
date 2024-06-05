@@ -1,0 +1,57 @@
+org: 89acat
+app: vaja8
+service: exams-service
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: us-east-1
+
+functions:
+  createExam:
+    handler: handler.createExam
+    events:
+      - http:
+          path: exams
+          method: post
+  getAllExams:
+    handler: handler.getAllExams
+    events:
+      - http:
+          path: exams
+          method: get
+  getExam:
+    handler: handler.getExam
+    events:
+      - http:
+          path: exams/{id}
+          method: get
+  updateExam:
+    handler: handler.updateExam
+    events:
+      - http:
+          path: exams/{id}
+          method: put
+  deleteExam:
+    handler: handler.deleteExam
+    events:
+      - http:
+          path: exams/{id}
+          method: delete
+
+resources:
+  Resources:
+    ExamsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Exams
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
