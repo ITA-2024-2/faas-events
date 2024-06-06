@@ -1,3 +1,5 @@
+Vaja 8:
+
 endpoints:
   POST - https://pz9g7qrxt3.execute-api.us-east-1.amazonaws.com/dev/exams
   GET - https://pz9g7qrxt3.execute-api.us-east-1.amazonaws.com/dev/exams
@@ -10,3 +12,25 @@ functions:
   getExam: exams-service-dev-getExam (19 MB)
   updateExam: exams-service-dev-updateExam (19 MB)
   deleteExam: exams-service-dev-deleteExam (19 MB)
+
+
+Vaja 9:
+
+endpoints:
+  POST - https://gvt1224fn5.execute-api.us-east-1.amazonaws.com/dev/exams
+  GET - https://gvt1224fn5.execute-api.us-east-1.amazonaws.com/dev/exams
+  GET - https://gvt1224fn5.execute-api.us-east-1.amazonaws.com/dev/exams/{id}
+  PUT - https://gvt1224fn5.execute-api.us-east-1.amazonaws.com/dev/exams/{id}
+  DELETE - https://gvt1224fn5.execute-api.us-east-1.amazonaws.com/dev/exams/{id}
+  POST - https://gvt1224fn5.execute-api.us-east-1.amazonaws.com/dev/file-upload
+
+functions:
+  createExam: exams-service-dev-createExam (5.6 MB)
+  getAllExams: exams-service-dev-getAllExams (5.6 MB)
+  getExam: exams-service-dev-getExam (5.6 MB)
+  updateExam: exams-service-dev-updateExam (5.6 MB)
+  deleteExam: exams-service-dev-deleteExam (5.6 MB)
+  databaseTrigger: exams-service-dev-databaseTrigger (5.6 MB)
+  fileUpload: exams-service-dev-fileUpload (5.6 MB)
+  messageHandler: exams-service-dev-messageHandler (5.6 MB)
+  cronJob: exams-service-dev-cronJob (5.6 MB)
