@@ -285,7 +285,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                "S3Key": "serverless/exams-service/dev/1717675811522-2024-06-06T12:10:11.522Z/exams-service.zip"
               },
               "Handler": "handler.createExam",
               "Runtime": "nodejs20.x",
@@ -310,7 +310,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                "S3Key": "serverless/exams-service/dev/1717675811522-2024-06-06T12:10:11.522Z/exams-service.zip"
               },
               "Handler": "handler.getAllExams",
               "Runtime": "nodejs20.x",
@@ -335,7 +335,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                "S3Key": "serverless/exams-service/dev/1717675811522-2024-06-06T12:10:11.522Z/exams-service.zip"
               },
               "Handler": "handler.getExam",
               "Runtime": "nodejs20.x",
@@ -360,7 +360,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                "S3Key": "serverless/exams-service/dev/1717675811522-2024-06-06T12:10:11.522Z/exams-service.zip"
               },
               "Handler": "handler.updateExam",
               "Runtime": "nodejs20.x",
@@ -385,7 +385,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                "S3Key": "serverless/exams-service/dev/1717675811522-2024-06-06T12:10:11.522Z/exams-service.zip"
               },
               "Handler": "handler.deleteExam",
               "Runtime": "nodejs20.x",
@@ -410,7 +410,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                "S3Key": "serverless/exams-service/dev/1717675811522-2024-06-06T12:10:11.522Z/exams-service.zip"
               },
               "Handler": "handler.databaseTrigger",
               "Runtime": "nodejs20.x",
@@ -435,7 +435,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                "S3Key": "serverless/exams-service/dev/1717675811522-2024-06-06T12:10:11.522Z/exams-service.zip"
               },
               "Handler": "handler.fileUpload",
               "Runtime": "nodejs20.x",
@@ -460,7 +460,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                "S3Key": "serverless/exams-service/dev/1717675811522-2024-06-06T12:10:11.522Z/exams-service.zip"
               },
               "Handler": "handler.messageHandler",
               "Runtime": "nodejs20.x",
@@ -485,7 +485,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z/exams-service.zip"
+                "S3Key": "serverless/exams-service/dev/1717675811522-2024-06-06T12:10:11.522Z/exams-service.zip"
               },
               "Handler": "handler.cronJob",
               "Runtime": "nodejs20.x",
@@ -503,94 +503,94 @@
               "CronJobLogGroup"
             ]
           },
-          "CreateExamLambdaVersion5cnpxxVfBR5dLwUaiO6XnlpD8ntu4XDyWnCiBXALo": {
+          "CreateExamLambdaVersionugj3q9bvAJlReDI7iFlmdpNzax5QJhstpRSaQnU": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreateExamLambdaFunction"
               },
-              "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              "CodeSha256": "AhI0kqbcAZEDXkqA4Txr3XR/kgfZwt0b31Eub09lA2w="
             }
           },
-          "GetAllExamsLambdaVersionxISw7e3qbHML7mMlWOS8cr1ffbMM0dcmY5JFIxTNq3Y": {
+          "GetAllExamsLambdaVersionnO1PPpY5y3UGOQWYeZxK4DtubPhvg32tvMUlroRsU8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetAllExamsLambdaFunction"
               },
-              "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              "CodeSha256": "AhI0kqbcAZEDXkqA4Txr3XR/kgfZwt0b31Eub09lA2w="
             }
           },
-          "GetExamLambdaVersiongO6sIG1YxPGWWsmodyI9GOq7vJ1PuiJMSo2Vfz5hQlE": {
+          "GetExamLambdaVersionbChdDCcxKUDu9P9DaGrnKuGFZrNwLq0XLCCbDxPq5B8": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetExamLambdaFunction"
               },
-              "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              "CodeSha256": "AhI0kqbcAZEDXkqA4Txr3XR/kgfZwt0b31Eub09lA2w="
             }
           },
-          "UpdateExamLambdaVersioncltLNGrCcuHqkLdSbktwvwl8XaKFhpVymJfAiJrazg": {
+          "UpdateExamLambdaVersionys3d2f63bFSnIKB9PPi8xjiRJ6Uxgk2k6fuINh4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "UpdateExamLambdaFunction"
               },
-              "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              "CodeSha256": "AhI0kqbcAZEDXkqA4Txr3XR/kgfZwt0b31Eub09lA2w="
             }
           },
-          "DeleteExamLambdaVersionDXW2w1D5TX9MUYlgV0bcvWd405IOJZo45AqBNSNXeA": {
+          "DeleteExamLambdaVersionVFvm8CJbbXF7FPdsroZggg83Se9Vul0Xrwm6W44LbY": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DeleteExamLambdaFunction"
               },
-              "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              "CodeSha256": "AhI0kqbcAZEDXkqA4Txr3XR/kgfZwt0b31Eub09lA2w="
             }
           },
-          "DatabaseTriggerLambdaVersionmjC3JWZuMhT7WvBYkGPMslq8dvudTcbD4bOsJQjZxU": {
+          "DatabaseTriggerLambdaVersionFnP8bxfmL5A3kiKYF6vqMAe1dnZvPXhHxoyDK9wJA": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "DatabaseTriggerLambdaFunction"
               },
-              "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              "CodeSha256": "AhI0kqbcAZEDXkqA4Txr3XR/kgfZwt0b31Eub09lA2w="
             }
           },
-          "FileUploadLambdaVersionw8LIfZmmZyBKF7Q5FPnuE6wP1hEocuyQZi00WxTXg4": {
+          "FileUploadLambdaVersionbJxyA3a0BKU8hIhAKkLHJYAfPr7sMKaGnUmOvl8zkdI": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "FileUploadLambdaFunction"
               },
-              "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              "CodeSha256": "AhI0kqbcAZEDXkqA4Txr3XR/kgfZwt0b31Eub09lA2w="
             }
           },
-          "MessageHandlerLambdaVersionpyXXM99uEwHitfkCuGGxEF9pliVhyqMwsjx02oGDGo": {
+          "MessageHandlerLambdaVersion1LcTYj4NT64NG1ngFjU1karXx5GMkg7xyRfXnCTREE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "MessageHandlerLambdaFunction"
               },
-              "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              "CodeSha256": "AhI0kqbcAZEDXkqA4Txr3XR/kgfZwt0b31Eub09lA2w="
             }
           },
-          "CronJobLambdaVersionrlP8fVQNZJwnTH8VmWO6JkWdWWXDl5ZjhdMHxunB8": {
+          "CronJobLambdaVersion5WFLmEMivCPaNz5EZ4wktciQJljU0jESD3dG6MhnH4": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CronJobLambdaFunction"
               },
-              "CodeSha256": "BpY/aQwwDeQA8cGgPVE9ruhOCR5vCW7p84mD4tMn/E0="
+              "CodeSha256": "AhI0kqbcAZEDXkqA4Txr3XR/kgfZwt0b31Eub09lA2w="
             }
           },
           "CronJobEventsRuleSchedule1": {
@@ -1095,7 +1095,7 @@
               "FileUploadLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1717606505606": {
+          "ApiGatewayDeployment1717675807705": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -1412,6 +1412,19 @@
             "Properties": {
               "QueueName": "faas-events-queue"
             }
+          },
+          "GatewayResponseDefault4XX": {
+            "Type": "AWS::ApiGateway::GatewayResponse",
+            "Properties": {
+              "ResponseParameters": {
+                "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+                "gatewayresponse.header.Access-Control-Allow-Headers": "'*'"
+              },
+              "ResponseType": "DEFAULT_4XX",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
           }
         },
         "Outputs": {
@@ -1426,7 +1439,7 @@
           "CreateExamLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateExamLambdaVersion5cnpxxVfBR5dLwUaiO6XnlpD8ntu4XDyWnCiBXALo"
+              "Ref": "CreateExamLambdaVersionugj3q9bvAJlReDI7iFlmdpNzax5QJhstpRSaQnU"
             },
             "Export": {
               "Name": "sls-exams-service-dev-CreateExamLambdaFunctionQualifiedArn"
@@ -1435,7 +1448,7 @@
           "GetAllExamsLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetAllExamsLambdaVersionxISw7e3qbHML7mMlWOS8cr1ffbMM0dcmY5JFIxTNq3Y"
+              "Ref": "GetAllExamsLambdaVersionnO1PPpY5y3UGOQWYeZxK4DtubPhvg32tvMUlroRsU8"
             },
             "Export": {
               "Name": "sls-exams-service-dev-GetAllExamsLambdaFunctionQualifiedArn"
@@ -1444,7 +1457,7 @@
           "GetExamLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetExamLambdaVersiongO6sIG1YxPGWWsmodyI9GOq7vJ1PuiJMSo2Vfz5hQlE"
+              "Ref": "GetExamLambdaVersionbChdDCcxKUDu9P9DaGrnKuGFZrNwLq0XLCCbDxPq5B8"
             },
             "Export": {
               "Name": "sls-exams-service-dev-GetExamLambdaFunctionQualifiedArn"
@@ -1453,7 +1466,7 @@
           "UpdateExamLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "UpdateExamLambdaVersioncltLNGrCcuHqkLdSbktwvwl8XaKFhpVymJfAiJrazg"
+              "Ref": "UpdateExamLambdaVersionys3d2f63bFSnIKB9PPi8xjiRJ6Uxgk2k6fuINh4"
             },
             "Export": {
               "Name": "sls-exams-service-dev-UpdateExamLambdaFunctionQualifiedArn"
@@ -1462,7 +1475,7 @@
           "DeleteExamLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DeleteExamLambdaVersionDXW2w1D5TX9MUYlgV0bcvWd405IOJZo45AqBNSNXeA"
+              "Ref": "DeleteExamLambdaVersionVFvm8CJbbXF7FPdsroZggg83Se9Vul0Xrwm6W44LbY"
             },
             "Export": {
               "Name": "sls-exams-service-dev-DeleteExamLambdaFunctionQualifiedArn"
@@ -1471,7 +1484,7 @@
           "DatabaseTriggerLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "DatabaseTriggerLambdaVersionmjC3JWZuMhT7WvBYkGPMslq8dvudTcbD4bOsJQjZxU"
+              "Ref": "DatabaseTriggerLambdaVersionFnP8bxfmL5A3kiKYF6vqMAe1dnZvPXhHxoyDK9wJA"
             },
             "Export": {
               "Name": "sls-exams-service-dev-DatabaseTriggerLambdaFunctionQualifiedArn"
@@ -1480,7 +1493,7 @@
           "FileUploadLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "FileUploadLambdaVersionw8LIfZmmZyBKF7Q5FPnuE6wP1hEocuyQZi00WxTXg4"
+              "Ref": "FileUploadLambdaVersionbJxyA3a0BKU8hIhAKkLHJYAfPr7sMKaGnUmOvl8zkdI"
             },
             "Export": {
               "Name": "sls-exams-service-dev-FileUploadLambdaFunctionQualifiedArn"
@@ -1489,7 +1502,7 @@
           "MessageHandlerLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "MessageHandlerLambdaVersionpyXXM99uEwHitfkCuGGxEF9pliVhyqMwsjx02oGDGo"
+              "Ref": "MessageHandlerLambdaVersion1LcTYj4NT64NG1ngFjU1karXx5GMkg7xyRfXnCTREE"
             },
             "Export": {
               "Name": "sls-exams-service-dev-MessageHandlerLambdaFunctionQualifiedArn"
@@ -1498,7 +1511,7 @@
           "CronJobLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CronJobLambdaVersionrlP8fVQNZJwnTH8VmWO6JkWdWWXDl5ZjhdMHxunB8"
+              "Ref": "CronJobLambdaVersion5WFLmEMivCPaNz5EZ4wktciQJljU0jESD3dG6MhnH4"
             },
             "Export": {
               "Name": "sls-exams-service-dev-CronJobLambdaFunctionQualifiedArn"
@@ -1680,7 +1693,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "CreateExamLambdaVersion5cnpxxVfBR5dLwUaiO6XnlpD8ntu4XDyWnCiBXALo"
+        "versionLogicalId": "CreateExamLambdaVersionugj3q9bvAJlReDI7iFlmdpNzax5QJhstpRSaQnU"
       },
       "getAllExams": {
         "handler": "handler.getAllExams",
@@ -1716,7 +1729,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "GetAllExamsLambdaVersionxISw7e3qbHML7mMlWOS8cr1ffbMM0dcmY5JFIxTNq3Y"
+        "versionLogicalId": "GetAllExamsLambdaVersionnO1PPpY5y3UGOQWYeZxK4DtubPhvg32tvMUlroRsU8"
       },
       "getExam": {
         "handler": "handler.getExam",
@@ -1752,7 +1765,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "GetExamLambdaVersiongO6sIG1YxPGWWsmodyI9GOq7vJ1PuiJMSo2Vfz5hQlE"
+        "versionLogicalId": "GetExamLambdaVersionbChdDCcxKUDu9P9DaGrnKuGFZrNwLq0XLCCbDxPq5B8"
       },
       "updateExam": {
         "handler": "handler.updateExam",
@@ -1788,7 +1801,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "UpdateExamLambdaVersioncltLNGrCcuHqkLdSbktwvwl8XaKFhpVymJfAiJrazg"
+        "versionLogicalId": "UpdateExamLambdaVersionys3d2f63bFSnIKB9PPi8xjiRJ6Uxgk2k6fuINh4"
       },
       "deleteExam": {
         "handler": "handler.deleteExam",
@@ -1824,7 +1837,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "DeleteExamLambdaVersionDXW2w1D5TX9MUYlgV0bcvWd405IOJZo45AqBNSNXeA"
+        "versionLogicalId": "DeleteExamLambdaVersionVFvm8CJbbXF7FPdsroZggg83Se9Vul0Xrwm6W44LbY"
       },
       "databaseTrigger": {
         "handler": "handler.databaseTrigger",
@@ -1844,7 +1857,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "DatabaseTriggerLambdaVersionmjC3JWZuMhT7WvBYkGPMslq8dvudTcbD4bOsJQjZxU"
+        "versionLogicalId": "DatabaseTriggerLambdaVersionFnP8bxfmL5A3kiKYF6vqMAe1dnZvPXhHxoyDK9wJA"
       },
       "fileUpload": {
         "handler": "handler.fileUpload",
@@ -1880,7 +1893,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "FileUploadLambdaVersionw8LIfZmmZyBKF7Q5FPnuE6wP1hEocuyQZi00WxTXg4"
+        "versionLogicalId": "FileUploadLambdaVersionbJxyA3a0BKU8hIhAKkLHJYAfPr7sMKaGnUmOvl8zkdI"
       },
       "messageHandler": {
         "handler": "handler.messageHandler",
@@ -1899,7 +1912,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "MessageHandlerLambdaVersionpyXXM99uEwHitfkCuGGxEF9pliVhyqMwsjx02oGDGo"
+        "versionLogicalId": "MessageHandlerLambdaVersion1LcTYj4NT64NG1ngFjU1karXx5GMkg7xyRfXnCTREE"
       },
       "cronJob": {
         "handler": "handler.cronJob",
@@ -1918,7 +1931,7 @@
         "timeout": 6,
         "runtime": "nodejs20.x",
         "vpc": {},
-        "versionLogicalId": "CronJobLambdaVersionrlP8fVQNZJwnTH8VmWO6JkWdWWXDl5ZjhdMHxunB8"
+        "versionLogicalId": "CronJobLambdaVersion5WFLmEMivCPaNz5EZ4wktciQJljU0jESD3dG6MhnH4"
       }
     },
     "resources": {
@@ -1952,6 +1965,19 @@
           "Type": "AWS::SQS::Queue",
           "Properties": {
             "QueueName": "faas-events-queue"
+          }
+        },
+        "GatewayResponseDefault4XX": {
+          "Type": "AWS::ApiGateway::GatewayResponse",
+          "Properties": {
+            "ResponseParameters": {
+              "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+              "gatewayresponse.header.Access-Control-Allow-Headers": "'*'"
+            },
+            "ResponseType": "DEFAULT_4XX",
+            "RestApiId": {
+              "Ref": "ApiGatewayRestApi"
+            }
           }
         }
       },
@@ -1987,7 +2013,7 @@
     "artifact": "/Users/tamaraj/Documents/SIPIA/ITA/Vaje/Vaja 8/.serverless/exams-service.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/exams-service/dev/1717606508788-2024-06-05T16:55:08.788Z",
+    "artifactDirectoryName": "serverless/exams-service/dev/1717675811522-2024-06-06T12:10:11.522Z",
     "artifact": "exams-service.zip"
   }
 }

@@ -88,13 +88,13 @@ functions:
           cors: true
 
   messageHandler:
-      handler: handler.messageHandler
-      events:
-        - sqs:
-            arn:
-              Fn::GetAtt:
-                - SQSQueue
-                - Arn
+    handler: handler.messageHandler
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - SQSQueue
+              - Arn
 
   cronJob:
     handler: handler.cronJob
@@ -124,8 +124,8 @@ custom:
     - '**/__tests__/**'
 
   includeDependencies:
-      forceInclude:
-        - knex
+    forceInclude:
+      - knex
 
 resources:
   Resources:
@@ -149,3 +149,13 @@ resources:
       Type: AWS::SQS::Queue
       Properties:
         QueueName: faas-events-queue
+
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
