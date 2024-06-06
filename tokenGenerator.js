@@ -4,7 +4,7 @@ const secretKey = 'your_secret_key';
 const payload = {
   sub: '1234567890',
   name: 'John Doe', 
-  admin: TextTrackCueList
+  admin: true
 };
 
 const options = {
